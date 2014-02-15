@@ -874,7 +874,7 @@ public class GerritTrigger extends Trigger<AbstractProject> implements GerritEve
                     if (approval.getType().equals(commentAdded.getVerdictCategory())
                         && (approval.getValue().equals(commentAdded.getCommentAddedTriggerApprovalValue())
                         || ("+" + approval.getValue()).equals(commentAdded.getCommentAddedTriggerApprovalValue()))) {
-                    return true;
+                        return commentAdded.matchComment(event.getComment());
                     }
                 }
             }

@@ -45,6 +45,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * An event configuration that causes the build to be triggered when a comment is added.
  * @author Tomas Westling &lt;tomas.westling@sonymobile.com&gt;
@@ -53,6 +56,7 @@ public class PluginCommentAddedEvent extends PluginGerritEvent implements Serial
     private static final long serialVersionUID = -1190562081236235819L;
     private String verdictCategory;
     private String commentAddedTriggerApprovalValue;
+    private String commentPattern;
 
     /**
      * Standard DataBoundConstructor.
@@ -60,9 +64,12 @@ public class PluginCommentAddedEvent extends PluginGerritEvent implements Serial
      * @param commentAddedTriggerApprovalValue the approval value.
      */
     @DataBoundConstructor
-    public PluginCommentAddedEvent(String verdictCategory, String commentAddedTriggerApprovalValue) {
+    public PluginCommentAddedEvent(String verdictCategory,
+                                   String commentAddedTriggerApprovalValue,
+                                   String commentPattern ) {
         this.verdictCategory = verdictCategory;
         this.commentAddedTriggerApprovalValue = commentAddedTriggerApprovalValue;
+        this.commentPattern = commentPattern;
     }
 
     /**
@@ -85,6 +92,15 @@ public class PluginCommentAddedEvent extends PluginGerritEvent implements Serial
      */
     public String getVerdictCategory() {
         return verdictCategory;
+    }
+
+    public boolean matchComment(String comment) {
+        Pattern pattern = Pattern.compile(commentPattern);
+        Matcher m = pattern.matcher(comment);
+        if (m.find()) {
+            return true;
+        }
+        return false;
     }
 
     /**
