@@ -62,11 +62,12 @@ public class PluginCommentAddedEvent extends PluginGerritEvent implements Serial
      * Standard DataBoundConstructor.
      * @param verdictCategory the value part of the VerdictCategory.
      * @param commentAddedTriggerApprovalValue the approval value.
+     * @param commentPattern the comment pattern.
      */
     @DataBoundConstructor
     public PluginCommentAddedEvent(String verdictCategory,
                                    String commentAddedTriggerApprovalValue,
-                                   String commentPattern ) {
+                                   String commentPattern) {
         this.verdictCategory = verdictCategory;
         this.commentAddedTriggerApprovalValue = commentAddedTriggerApprovalValue;
         this.commentPattern = commentPattern;
@@ -94,6 +95,11 @@ public class PluginCommentAddedEvent extends PluginGerritEvent implements Serial
         return verdictCategory;
     }
 
+    /**
+     * Matches the comment with the specified pattern.
+     * @param comment the comment that is seen.
+     * @return true if the comment matches the pattern.
+     */
     public boolean matchComment(String comment) {
         Pattern pattern = Pattern.compile(commentPattern);
         Matcher m = pattern.matcher(comment);
